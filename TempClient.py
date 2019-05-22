@@ -22,6 +22,8 @@ cnt = 0 # This is the number of data points taken before computing average and s
 
 now = datetime.datetime.now() # Get current time
 
+print("Starting countdown to 15 mark after the hour...")
+
 while int(now.strftime("%M")) % 15 != 0:# Do nothing until the 15 minute mark is hit
     now = datetime.datetime.now()
 
@@ -33,11 +35,11 @@ while True: # While loop that loops forever
         
         DataSent = True
         
-        AverageList.append( float(average / cnt) )
+        AverageList.append((datetime.datetime.now(), float(average / cnt)) )
         
         try:
-            conn = db.connect(host="192.168.0.188",port=3306, 
-                              user="test2", 
+            conn = db.connect(host="192.168.1.240",port=3306, 
+                              user="test", 
                               passwd="password", 
                               db="Temps111A")
                  
@@ -45,23 +47,14 @@ while True: # While loop that loops forever
             
             # For each item in list do: insert data or insert time & data
             for item in AverageList:
-                if isinstance(item, (list, tuple)):
                     
                      c.execute('''
                         INSERT INTO Temps111A.temps (ts,P1A)
                         VALUES
                         (%s,%f)
-                        ''' % (item[0],item[1]))
-                     
-                else:
-                    c.execute('''
-                        INSERT INTO Temps111A.temps (P1A)
-                        VALUES
-                        (%f)
-                        ''' % (item))
-                    
-                AverageList.remove() # remove item put into the database
-        
+                        ''' % (item[0],item[1]))                    
+                
+            AverageList.clear() # remove item put into the database
                     
             conn.commit()
                     
@@ -70,7 +63,7 @@ while True: # While loop that loops forever
             conn.close()
         except:
             
-            print("Could not post data to DB")
+            print("Could not insert data to DB, Storing date and time...")
             
         finally:
                     
@@ -86,10 +79,8 @@ while True: # While loop that loops forever
     
     else:
         arduinoString = str(arduinoData.readline()) #read the line of text from the serial port
-    
-        # average = np.hstack((average,float(arduinoString[2:7])))#append
         
-        average += float(arduinoString[2:7])
+        average += float(arduinoString[32:37])
         
         cnt += 1
         
