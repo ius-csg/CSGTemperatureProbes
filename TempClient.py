@@ -12,7 +12,7 @@ import datetime
 #all tempuratures will be in forinheit
 average = 0.00 # This holds the sum of the data points taken.
 
-arduinoData = serial.Serial('com11', 9600) #Creating our serial object named arduinoData
+arduinoData = serial.Serial('/dev/ttyACM0', 9600) #Creating our serial object named arduinoData
 
 DataSent = True  # We do not want to send blank data to the database
 
