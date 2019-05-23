@@ -12,7 +12,7 @@ import datetime
 #all tempuratures will be in forinheit
 average = 0.00 # This holds the sum of the data points taken.
 
-arduinoData = serial.Serial('com11', 9600) #Creating our serial object named arduinoData
+arduinoData = serial.Serial('COM11', 9600) #Creating our serial object named arduinoData
 
 DataSent = True  # We do not want to send blank data to the database
 
@@ -38,7 +38,7 @@ while True: # While loop that loops forever
         AverageList.append((datetime.datetime.now(), float(average / cnt)) )
         
         try:
-            conn = db.connect(host="192.168.1.240",port=3306, 
+            conn = db.connect(host="192.168.1.249",port=3306, 
                               user="test", 
                               passwd="password", 
                               db="Temps111A")
@@ -78,12 +78,11 @@ while True: # While loop that loops forever
         pass# Do Nothing
     
     else:
-        arduinoString = str(arduinoData.readline()) #read the line of text from the serial port
+        arduinobyte = arduinoData.readline() #read the line of text from the serial port
         
-        average += float(arduinoString[32:37])
+        average += float(arduinobyte.decode('utf-8'))
         
         cnt += 1
         
-        print(arduinoString[2:7])
         
         
