@@ -8,20 +8,14 @@ Created on Tue Jun  4 11:38:15 2019
 import pandas as pd 
 import MySQLdb as db
 from discord import Webhook, RequestsWebhookAdapter
-
-def send_message(message, currentTemp):
-    webhook = Webhook.partial(Channel_ID, 
-                              Web_hook , 
-                              adapter=RequestsWebhookAdapter())
-          
-    webhook.send(message)
     
-def send_message_with_probe_temps(message,high, average, p1, p2):
+def send_message_with_metrics(message,time,maximum, average):
     webhook = Webhook.partial(Channel_ID, 
                               Web_hook , 
                               adapter=RequestsWebhookAdapter())    
           
-    webhook.send((message)% (high,average,p1,p2))
+    webhook.send((message)% (time, maximum, average))
+
 
 # Channel_ID = 581267637657534496
 Channel_ID = 581253037750878264
@@ -45,17 +39,19 @@ try:
           
      conn.close()
      
+     # Get latest entry in the database
+     
+     time_of_last = p1df['ts'].iloc[[ -1]]
+     
      # find highest temp and time
+     time_of_max = p1df.iloc[p1df['temp'].argmax()]['ts']
+     max_temp = p1df.iloc[p1df['temp'].argmax()]['temp']
      
-     # get average of the week 
-     
-     # get average per day
+     # get average tempurature of the week 
+     week_average = (p1df['temp'].mean() + p2df['temp'].mean())/2
      
      # send status
-     
-     
-     
-    
+     send_message_with_metrics("The Database is up!/n The latest entry was at %f /n The maximum record tempurature is %.2f at %f. /n The weekly average tempurature is %f.",time_of_last, time_of_max, max_temp, week_average)
      
 except:
      
@@ -63,4 +59,4 @@ except:
                               Web_hook , 
                               adapter=RequestsWebhookAdapter())
     
-    webhook.send("Could not connect to give status.")
+    webhook.send("@Officers Could not connect to give status.")
