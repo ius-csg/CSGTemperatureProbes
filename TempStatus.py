@@ -31,7 +31,8 @@ Web_hook = "j0Lp3UhTuGoASLeU12ybCSDKyCdZJHP3DjZG5tSacCSFnVBqGNocAkwX2wJFcyRWqpGC
 
 try:
      conn = db.connect(host="192.168.1.249",port=3306, 
-                              user="q",
+                              user="test",
+                              password="test123",
                               db="Temps111A")
      
      query1 = "SELECT * FROM Temps111A.P1 WHERE ts >= DATEADD(day,-7, GETDATE())"
@@ -44,18 +45,16 @@ try:
           
      conn.close()
      
-     temps1 =  p1df['P1'].to_numpy()
+     # find highest temp and time
      
-     temps2 =  p2df['P2'].to_numpy()
+     # get average of the week 
      
-     highestTemp= temps1[3] if temps1[3] >= temps2[3] else temps2[3]
+     # get average per day
      
-     averageTemp = (temps1[3]+temps2[3])/2
+     # send status
      
-     send_message_with_probe_temps("@Officers CAUTION!!! An area in the CSG room is reading %.2f degrees fahrenheit. \n \
-The average tempurature of the room is %.2f degrees fahrenheit.\n \
-Tempurature probe 1 is currently reading %.2f degrees fahrenheit. \n \
-Tempuratere probe 2 is currently reading %.2f degrees fahrenheit.", highestTemp, averageTemp,temps1[3],temps2[3])
+     
+     
     
      
 except:

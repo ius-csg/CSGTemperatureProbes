@@ -33,8 +33,7 @@ Web_hook = "j0Lp3UhTuGoASLeU12ybCSDKyCdZJHP3DjZG5tSacCSFnVBqGNocAkwX2wJFcyRWqpGC
 
 try:
      conn = db.connect(host="192.168.1.249",port=3306, 
-                              user="test",  
-                              password="test123",
+                              user="q",
                               db="Temps111A")
      
      
@@ -57,10 +56,10 @@ try:
      averageTemp = (temps1[3]+temps2[3])/2
      
      if highestTemp >= 74:
-         send_message("WARNING!!! The CSG ROOM (111A) is currently %.2f degrees fahrenheit! Send someone to turn off the Servers!!!", highestTemp)
+         send_message("@everyone WARNING!!! The CSG ROOM (111A) is currently %.2f degrees fahrenheit! Send someone to turn off the Servers!!!", highestTemp)
      
      elif averageTemp >= 72:
-          send_message_with_probe_temps("CAUTION!!! An area in the CSG room is reading %.2f degrees fahrenheit. \n \
+          send_message_with_probe_temps("@Officers CAUTION!!! An area in the CSG room is reading %.2f degrees fahrenheit. \n \
 The average tempurature of the room is %.2f degrees fahrenheit.\n \
 Tempurature probe 1 is currently reading %.2f degrees fahrenheit. \n \
 Tempuratere probe 2 is currently reading %.2f degrees fahrenheit.", highestTemp, averageTemp,temps1[3],temps2[3])
@@ -72,7 +71,7 @@ except:
                               Web_hook , 
                               adapter=RequestsWebhookAdapter())
     
-    webhook.send("WARNING!!! Internal Network is down!!!")
+    webhook.send("@Officers WARNING!!! Internal Network is down!!!")
 
 
 

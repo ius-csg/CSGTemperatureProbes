@@ -49,7 +49,7 @@ while True: # While loop that loops forever
             for item in AverageList:
                     
                      c.execute('''
-                        INSERT INTO Temps111A.temps (ts,P1A)
+                        INSERT INTO Temps111A.temps (ts,temp)
                         VALUES
                         (%s,%f)
                         ''' % (item[0],item[1]))                    
