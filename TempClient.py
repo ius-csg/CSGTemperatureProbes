@@ -12,7 +12,7 @@ import datetime
 #all tempuratures will be in forinheit
 average = 0.00 # This holds the sum of the data points taken.
 
-arduinoData = serial.Serial('COM11', 9600) #Creating our serial object named arduinoData
+arduinoData = serial.Serial('/dev/ttyACM0', 9600) #Creating our serial object named arduinoData
 
 DataSent = True  # We do not want to send blank data to the database
 
@@ -42,8 +42,8 @@ while True: # While loop that loops forever
         
         try:
             conn = db.connect(host="192.168.1.249",port=3306, 
-                              user="test", 
-                              passwd="password", 
+                              user="pi#", 
+                              passwd="passwd", 
                               db="Temps111A")
                  
             c = conn.cursor()
@@ -52,7 +52,7 @@ while True: # While loop that loops forever
             for item in AverageList:
                     
                      c.execute('''
-                        INSERT INTO Temps111A.temps (ts,temp)
+                        INSERT INTO Temps111A.P# (ts,tempurature)
                         VALUES
                         (%f,%.2f)
                         ''' % (item[0],item[1]))                    

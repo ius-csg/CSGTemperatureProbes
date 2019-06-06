@@ -43,11 +43,11 @@ try:
      time_of_last = p1df['ts'].iloc[[ -1]]
      
      # find highest temp and time
-     time_of_max = p1df.iloc[p1df['temp'].argmax()]['ts']
-     max_temp = p1df.iloc[p1df['temp'].argmax()]['temp']
+     time_of_max = p1df.iloc[p1df['tempurature'].argmax()]['ts']
+     max_temp = p1df.iloc[p1df['tempurature'].argmax()]['tempurature']
      
      # get average tempurature of the week 
-     week_average = (p1df['temp'].mean() + p2df['temp'].mean())/2
+     week_average = (p1df['tempurature'].mean() + p2df['temp'].mean())/2
      
      # send status
      send_message_with_metrics("The Database is up!/n The latest entry was at %f /n The maximum record tempurature is %.2f at %f. /n The weekly average tempurature is %f.",time_of_last, time_of_max, max_temp, week_average)
