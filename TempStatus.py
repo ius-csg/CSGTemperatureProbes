@@ -25,8 +25,7 @@ Web_hook = "j0Lp3UhTuGoASLeU12ybCSDKyCdZJHP3DjZG5tSacCSFnVBqGNocAkwX2wJFcyRWqpGC
 
 try:
      conn = db.connect(host="192.168.1.249",port=3306, 
-                              user="test",
-                              password="test123",
+                              user="q",
                               db="Temps111A")
      
      query1 = "SELECT * FROM Temps111A.P1 WHERE ts >= DATEADD(day,-7, GETDATE())"

@@ -27,6 +27,9 @@ print("Starting countdown to 15 mark after the hour...")
 while int(now.strftime("%M")) % 15 != 0:# Do nothing until the 15 minute mark is hit
     now = datetime.datetime.now()
 
+if(arduinoData.inWaiting()!=0):
+    arduinoData.readline()
+
 while True: # While loop that loops forever
         
     now = datetime.datetime.now() # Get current time
@@ -35,7 +38,7 @@ while True: # While loop that loops forever
         
         DataSent = True
         
-        AverageList.append((datetime.datetime.now(), float(average / cnt)) )
+        AverageList.append((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), float(average / cnt)) )
         
         try:
             conn = db.connect(host="192.168.1.249",port=3306, 
@@ -51,7 +54,7 @@ while True: # While loop that loops forever
                      c.execute('''
                         INSERT INTO Temps111A.temps (ts,temp)
                         VALUES
-                        (%s,%f)
+                        (%f,%.2f)
                         ''' % (item[0],item[1]))                    
                 
             AverageList.clear() # remove item put into the database
@@ -61,7 +64,9 @@ while True: # While loop that loops forever
             print("Successfully sent data")
             
             conn.close()
-        except:
+        except Exception as e:
+            
+            print(e);
             
             print("Could not insert data to DB, Storing date and time...")
             
