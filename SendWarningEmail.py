@@ -7,7 +7,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 """Get a list of Labels from the user's mailbox.
 """
-
+#Does it work if I do this?
 from apiclient import errors
 gmail_user = 'iuscompsec@gmail.com'
 gmail_password = 'IUSh@Ck3r$'
@@ -15,7 +15,7 @@ gmail_password = 'IUSh@Ck3r$'
 sent_from = gmail_user
 to = ['zbouvier@iu.edu']
 subject = '*** TESTING PLEASE IGNORE ***'
-body = "We\'ll be putting temperature stuff here eventually. #HopefullyBeforeAugust"
+body = "We\'ll be putting temperature stuff here eventually. #HopefullyBeforeSeptember"
 
 email_text = """\
 From: %s
