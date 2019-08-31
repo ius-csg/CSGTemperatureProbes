@@ -12,30 +12,30 @@ from apiclient import errors
 gmail_user = 'iuscompsec@gmail.com'
 gmail_password = 'IUSh@Ck3r$'
 
-# sent_from = gmail_user
-# to = ['zbouvier@iu.edu']
-# subject = '*** TESTING PLEASE IGNORE ***'
+sent_from = gmail_user
+to = ['zbouvier@iu.edu']
+subject = '*** TESTING PLEASE IGNORE ***'
 body = "We\'ll be putting temperature stuff here eventually. #HopefullyBeforeAugust"
 
-# email_text = """\
-# From: %s
-# To: %s
-# Subject: %s
+email_text = """\
+From: %s
+To: %s
+Subject: %s
 
-# %s
-# """ % (sent_from, ", ".join(to), subject, body)
+%s
+""" % (sent_from, ", ".join(to), subject, body)
 
-# try:
-#     server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-#     server.ehlo()
-#     server.login(gmail_user, gmail_password)
-#     server.sendmail(sent_from, to, email_text)
-#     server.close()
+try:
+    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    server.ehlo()
+    server.login(gmail_user, gmail_password)
+    server.sendmail(sent_from, to, email_text)
+    server.close()
 
-#     print("Email sent!")
-# except Exception as itBroke:
-#     print(itBroke)
-#     print('Something went wrong...')
+    print("Email sent!")
+except Exception as itBroke:
+    print(itBroke)
+    print('Something went wrong...')
 
 
 
