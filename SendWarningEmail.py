@@ -3,8 +3,8 @@ import smtplib
 import pickle
 import os.path
 #from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
+#from google_auth_oauthlib.flow import InstalledAppFlow
+#from google.auth.transport.requests import Request
 """Get a list of Labels from the user's mailbox.
 """
 #Does it work if I do this?
