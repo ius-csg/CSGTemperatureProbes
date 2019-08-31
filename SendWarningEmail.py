@@ -2,7 +2,7 @@ from __future__ import print_function
 import smtplib
 import pickle
 import os.path
-from googleapiclient.discovery import build
+#from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 """Get a list of Labels from the user's mailbox.
