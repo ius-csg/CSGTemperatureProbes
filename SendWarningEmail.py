@@ -9,8 +9,13 @@ import os.path
 """
 #Does it work if I do this?
 from apiclient import errors
-gmail_user = 'iuscompsec@gmail.com'
-gmail_password = 'IUSh@Ck3r$'
+#Email /n Password
+with open("emailinfo.txt") as f:
+    emailList = list(f.read().splitlines())
+gmail_user = emailList[0]
+gmail_password = emailList[1]
+# gmail_user = 'iuscompsec@gmail.com'
+# gmail_password = 'N0TAr34lP455W0RD'
 
 sent_from = gmail_user
 to = ['zbouvier@iu.edu']
