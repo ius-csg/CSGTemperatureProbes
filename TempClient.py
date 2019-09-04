@@ -66,7 +66,7 @@ while True: # While loop that loops forever
             conn.close()
         except Exception as e:
             
-            print(e);
+            print(e)
             
             print("Could not insert data to DB, Storing date and time...")
             
