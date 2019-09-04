@@ -19,6 +19,7 @@ gmail_password = emailList[1]
 
 sent_from = gmail_user
 to = ['zbouvier@iu.edu']
+#TODO Make this to a list of things pulled SELECT * FROM USER_INFORMATION WHERE MEMBER_TYPE = "OFFICER"
 subject = '*** TESTING PLEASE IGNORE ***'
 body = "We\'ll be putting temperature stuff here eventually. #HopefullyBeforeSeptember"
 
