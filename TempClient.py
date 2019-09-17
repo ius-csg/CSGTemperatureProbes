@@ -4,15 +4,18 @@ Created on Sat May 18 21:24:52 2019
 
 @author: ZAC16
 """
-
+import os
 import serial
 import MySQLdb as db
 import datetime 
 
 #all tempuratures will be in forinheit
 average = 0.00 # This holds the sum of the data points taken.
+if os.name == 'nt':
+    arduinoData = serial.Serial('COM3', 9600) #Creating our serial object named arduinoData for Windows
 
-arduinoData = serial.Serial('/dev/ttyACM0', 9600) #Creating our serial object named arduinoData
+else:
+    arduinoData = serial.Serial('/dev/ttyACM0', 9600) #Creating our serial object named arduinoData for NOT Windows
 
 DataSent = True  # We do not want to send blank data to the database
 
@@ -24,7 +27,7 @@ now = datetime.datetime.now() # Get current time
 
 print("Starting countdown to 15 mark after the hour...")
 
-while int(now.strftime("%M")) % 15 != 0:# Do nothing until the 15 minute mark is hit
+while int(now.strftime("%M")) % 1 != 0:# Do nothing until the 15 minute mark is hit
     now = datetime.datetime.now()
 
 if(arduinoData.inWaiting()!=0):
