@@ -8,89 +8,48 @@ import os
 import serial
 import MySQLdb as db
 import datetime 
-
-#all tempuratures will be in forinheit
+with open("./sqlinfo.txt") as f:
+    sqlList = list(f.read().splitlines())
+    sql_user = sqlList[0]
+    sql_password = sqlList[1]   
+#all tempuratures will be in F
 average = 0.00 # This holds the sum of the data points taken.
 if os.name == 'nt':
-    arduinoData = serial.Serial('COM3', 9600) #Creating our serial object named arduinoData for Windows
+arduinoData = serial.Serial('COM3', 9600) #Creating our serial object named arduinoData for Windows
 
 else:
-    arduinoData = serial.Serial('/dev/ttyACM0', 9600) #Creating our serial object named arduinoData for NOT Windows
+arduinoData = serial.Serial('/dev/ttyACM0', 9600) #Creating our serial object named arduinoData for NOT Windows
 
 DataSent = True  # We do not want to send blank data to the database
 
-AverageList = [] # List to store the averages, particularly if the DB goes down.
-
-cnt = 0 # This is the number of data points taken before computing average and sent to the database.
-
-now = datetime.datetime.now() # Get current time
-
-print("Starting countdown to 15 mark after the hour...")
-
-while int(now.strftime("%M")) % 1 != 0:# Do nothing until the 15 minute mark is hit
-    now = datetime.datetime.now()
-
-if(arduinoData.inWaiting()!=0):
-    arduinoData.readline()
-
-while True: # While loop that loops forever
-        
-    now = datetime.datetime.now() # Get current time
+try:
+    conn = db.connect(host="192.168.1.101", port=3306, user=sql_user, passwd=sql_password, db="Temperature")
+            
+    c = conn.cursor()
+    collectingData() 
+    insertData()                 
+    conn.commit()
+    conn.close()
+except Exception as e:
     
-    if int(now.strftime("%M")) % 15 == 0 and DataSent is False:
-        
-        DataSent = True
-        
-        AverageList.append((datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), float(average / cnt)) )
-        
-        try:
-            conn = db.connect(host="192.168.1.249",port=3306, 
-                              user="pi#", 
-                              passwd="passwd", 
-                              db="Temps111A")
-                 
-            c = conn.cursor()
-            
-            # For each item in list do: insert data or insert time & data
-            for item in AverageList:
-                    
-                     c.execute('''
-                        INSERT INTO Temps111A.P# (ts,tempurature)
-                        VALUES
-                        (%f,%.2f)
-                        ''' % (item[0],item[1]))                    
-                
-            AverageList.clear() # remove item put into the database
-                    
-            conn.commit()
-                    
-            print("Successfully sent data")
-            
-            conn.close()
-        except Exception as e:
-            
-            print(e)
-            
-            print("Could not insert data to DB, Storing date and time...")
-            
-        finally:
-                    
-            average = 0.0
-        
-            cnt = 0
-            
-    elif(int(now.strftime("%M")) % 15 == 1 and DataSent is True):
-        DataSent = False
-        
-    elif(arduinoData.inWaiting()==0):
-        pass# Do Nothing
+    print(e)
     
-    else:
-        arduinobyte = arduinoData.readline() #read the line of text from the serial port
-        
-        average += float(arduinobyte.decode('utf-8'))
-        
-        cnt += 1
-        
-        
-        
+    print("Could not insert data to DB, Storing date and time...")
+    
+finally:
+            
+    average = 0.0
+
+    cnt = 0
+
+
+def collectingData():
+    # while(true):
+    #    go for 15 minutes
+    #    break
+    #do stuff to collect
+
+def insertData():
+    #insert stuff
+    collectingData()
+
