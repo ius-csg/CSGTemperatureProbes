@@ -1,11 +1,14 @@
 # bot.py
 import os
+import asyncio
 import mysql.connector
 from mysql.connector import Error
-
 import discord
 from dotenv import load_dotenv
-
+with open("../src/sqlinfo.txt") as f:
+    sqlList = list(f.read().splitlines())
+    sql_user = sqlList[0]
+    sql_password = sqlList[1]   
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
@@ -17,7 +20,27 @@ async def on_ready():
     for guild in client.guilds:
         if guild.name == GUILD:
             break
-
+    while(True):
+        try:
+            connection = mysql.connector.connect(host="192.168.1.101",port=3306, database='Temperature', user=sql_user, password=sql_password)
+            sql_select_Query = "select temperature from TEMPERATURE_HISTORY T WHERE T.EFFDT = (SELECT MAX(TT.EFFDT) FROM TEMPERATURE_HISTORY TT WHERE TT.DEVICE_ID = T.DEVICE_ID)" 
+            cursor = connection.cursor()
+            cursor.execute(sql_select_Query)
+            records = cursor.fetchall()
+            for row in records:
+                print(row[0])
+                if (float(row[0]) >= 72):
+                    channel = client.get_channel(616465622737354783)
+                    await channel.send('uh-oh')
+                    await asyncio.sleep(3600)
+        except Error as e:
+            print("Error reading data from MySQL table", e)
+        finally:
+            if (connection.is_connected()):
+                connection.close()
+                cursor.close()
+                print("MySQL connection is closed")
+            await asyncio.sleep(10)
     print(
         f'{client.user} is connected to the following guild:\n'
         f'{guild.name}(id: {guild.id})'
@@ -26,6 +49,7 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
+    
     if message.content == "!temp":
         with open("../src/sqlinfo.txt") as f:
             sqlList = list(f.read().splitlines())
