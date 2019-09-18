@@ -27,7 +27,7 @@ async def on_message(message):
     if message.author == client.user:
         return
     if message.content == "!temp":
-        with open("../sqlinfo.txt") as f:
+        with open("../src/sqlinfo.txt") as f:
             sqlList = list(f.read().splitlines())
             sql_user = sqlList[0]
             sql_password = sqlList[1]   
@@ -37,7 +37,7 @@ async def on_message(message):
                                                 user=sql_user,
                                                 password=sql_password)
 
-            sql_select_Query = "select * from TEMPERATURE_HISTORY" # WHERE EFFDT = (SELECT MAX(EFFDT) FROM TEMPERATURE_HISTORY)
+            sql_select_Query = "select * from TEMPERATURE_HISTORY T WHERE T.EFFDT = (SELECT MAX(TT.EFFDT) FROM TEMPERATURE_HISTORY TT WHERE TT.DEVICE_ID = T.DEVICE_ID)" 
             cursor = connection.cursor()
             cursor.execute(sql_select_Query)
             records = cursor.fetchall()
